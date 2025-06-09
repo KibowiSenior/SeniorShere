@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>/pages - File Sharing Server</title>
+    <title>/pages - File & Media Share</title>
     <style>
         * {
             margin: 0;
@@ -12,108 +12,111 @@
         }
 
         body {
-            font-family: 'Courier New', 'Monaco', monospace;
+            font-family: 'Courier New', monospace;
             background: #0a0a0a;
             color: #00ff00;
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            line-height: 1.6;
+            justify-content: center;
+            overflow: hidden;
         }
 
         .container {
-            max-width: 800px;
-            padding: 2rem;
             text-align: center;
+            max-width: 600px;
+            padding: 2rem;
         }
 
         .terminal-window {
             background: #000;
             border: 2px solid #00ff00;
             border-radius: 8px;
-            padding: 1rem;
+            padding: 2rem;
             box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+            position: relative;
         }
 
         .terminal-header {
-            background: #1a1a1a;
-            margin: -1rem -1rem 1rem -1rem;
-            padding: 0.5rem 1rem;
-            border-bottom: 1px solid #00ff00;
-            text-align: left;
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .dots {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot.red { background: #ff5555; }
+        .dot.yellow { background: #ffff55; }
+        .dot.green { background: #55ff55; }
+
+        .terminal-title {
+            flex: 1;
+            text-align: center;
+            color: #00ff00;
             font-size: 0.9rem;
-            color: #888;
         }
 
         .ascii-art {
-            font-size: 0.7rem;
+            font-size: 0.8rem;
+            line-height: 1;
             color: #00ff00;
-            margin: 2rem 0;
+            margin-bottom: 2rem;
             white-space: pre;
-            text-align: center;
         }
 
-        h1 {
-            color: #ff0080;
-            font-size: 2rem;
-            margin: 1rem 0;
-            text-shadow: 0 0 10px rgba(255, 0, 128, 0.5);
-        }
-
-        .description {
-            font-size: 1.1rem;
-            margin: 1.5rem 0;
+        .main-text {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
             color: #00ff00;
         }
 
-        .main-site {
-            background: #1a1a1a;
-            border: 1px solid #333;
-            padding: 1rem;
-            margin: 2rem 0;
-            border-radius: 4px;
-            font-size: 1.2rem;
-        }
-
-        .main-site::before {
-            content: '> ';
+        .main-text .highlight {
             color: #ff0080;
+            font-weight: bold;
         }
 
-        .main-site a {
+        .purpose {
+            font-size: 1rem;
+            color: #888;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .link {
             color: #00ffff;
             text-decoration: none;
+            font-size: 1.1rem;
+            border: 1px solid #00ffff;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
             transition: all 0.3s ease;
+            display: inline-block;
         }
 
-        .main-site a:hover {
-            color: #ff0080;
-            text-shadow: 0 0 5px rgba(255, 0, 128, 0.7);
+        .link:hover {
+            background: #00ffff;
+            color: #000;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
         }
 
-        .status {
-            margin-top: 2rem;
-            padding: 1rem;
-            background: #0d1117;
-            border-left: 4px solid #00ff00;
-            text-align: left;
-        }
-
-        .status-line {
-            display: flex;
-            justify-content: space-between;
-            margin: 0.5rem 0;
-            font-size: 0.9rem;
-        }
-
-        .status-ok {
-            color: #00ff00;
-        }
-
-        .blinking {
+        .cursor {
+            display: inline-block;
+            background: #00ff00;
+            width: 2px;
+            height: 1.2em;
             animation: blink 1s infinite;
+            margin-left: 0.2rem;
         }
 
         @keyframes blink {
@@ -121,7 +124,7 @@
             51%, 100% { opacity: 0; }
         }
 
-        /* Matrix background effect */
+        /* Matrix background */
         .matrix {
             position: fixed;
             top: 0;
@@ -133,68 +136,62 @@
             opacity: 0.05;
         }
 
-        /* Responsive */
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             .container {
                 padding: 1rem;
             }
             
-            h1 {
-                font-size: 1.5rem;
+            .terminal-window {
+                padding: 1.5rem;
             }
             
             .ascii-art {
-                font-size: 0.5rem;
+                font-size: 0.6rem;
+            }
+            
+            .main-text {
+                font-size: 1rem;
             }
         }
     </style>
 </head>
 <body>
     <canvas class="matrix" id="matrix"></canvas>
-
+    
     <div class="container">
         <div class="terminal-window">
-            <div class="terminal-header">root@server:/pages$ cat info.txt</div>
+            <div class="terminal-header">
+                <div class="dots">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                </div>
+                <div class="terminal-title">hacker@spymc:~/pages$</div>
+            </div>
             
             <div class="ascii-art">
-╔══════════════════════════════════════════════════════════════╗
-║  ███████╗██╗██╗     ███████╗    ███████╗██╗  ██╗ █████╗ ██████╗ ███████╗  ║
-║  ██╔════╝██║██║     ██╔════╝    ██╔════╝██║  ██║██╔══██╗██╔══██╗██╔════╝  ║
-║  █████╗  ██║██║     █████╗      ███████╗███████║███████║██████╔╝█████╗    ║
-║  ██╔══╝  ██║██║     ██╔══╝      ╚════██║██╔══██║██╔══██║██╔══██╗██╔══╝    ║
-║  ██║     ██║███████╗███████╗    ███████║██║  ██║██║  ██║██║  ██║███████╗  ║
-║  ╚═╝     ╚═╝╚══════╝╚══════╝    ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝  ║
-╚══════════════════════════════════════════════════════════════╝
+   _____ _                  
+  / ____| |                 
+ | (___ | |__   __ _ _ __ ___ 
+  \___ \| '_ \ / _` | '__/ _ \
+  ____) | | | | (_| | | |  __/
+ |_____/|_| |_|\__,_|_|  \___|
+                              
+      File & Media Share
             </div>
-
-            <h1>/pages</h1>
             
-            <div class="description">
-                File & Media Sharing Server
-            </div>
-
-            <div class="main-site">
-                Main Website: <a href="https://senior.spymc.xyz">senior.spymc.xyz</a>
-            </div>
-
-            <div class="status">
-                <div class="status-line">
-                    <span>Server Status:</span>
-                    <span class="status-ok">ONLINE <span class="blinking">●</span></span>
-                </div>
-                <div class="status-line">
-                    <span>Uptime:</span>
-                    <span class="status-ok">99.9%</span>
-                </div>
-                <div class="status-line">
-                    <span>Storage:</span>
-                    <span class="status-ok">Available</span>
-                </div>
-                <div class="status-line">
-                    <span>Access:</span>
-                    <span class="status-ok">Secure</span>
-                </div>
-            </div>
+            <p class="main-text">
+                <span class="highlight">Main Website:</span> senior.spymc.xyz<span class="cursor"></span>
+            </p>
+            
+            <p class="purpose">
+                This endpoint is dedicated to file and media sharing.<br>
+                Simple. Secure. Efficient.
+            </p>
+            
+            <a href="https://senior.spymc.xyz" class="link">
+                → Access Main Site
+            </a>
         </div>
     </div>
 
@@ -206,8 +203,9 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        const matrix = "01";
+        const matrix = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*(){}[]|\\:;\"'<>,.?/~`";
         const matrixArray = matrix.split("");
+
         const fontSize = 14;
         const columns = canvas.width / fontSize;
 
@@ -221,7 +219,7 @@
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             ctx.fillStyle = '#00ff00';
-            ctx.font = fontSize + 'px monospace';
+            ctx.font = fontSize + 'px Courier New';
 
             for (let i = 0; i < drops.length; i++) {
                 const text = matrixArray[Math.floor(Math.random() * matrixArray.length)];
@@ -234,29 +232,12 @@
             }
         }
 
-        setInterval(drawMatrix, 35);
+        setInterval(drawMatrix, 40);
 
         // Resize canvas on window resize
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-        });
-
-        // Glitch effect on hover
-        const title = document.querySelector('h1');
-        title.addEventListener('mouseenter', () => {
-            let glitchCount = 0;
-            const glitchInterval = setInterval(() => {
-                title.style.textShadow = `
-                    ${Math.random() * 10 - 5}px ${Math.random() * 10 - 5}px 0 #ff0080,
-                    ${Math.random() * 10 - 5}px ${Math.random() * 10 - 5}px 0 #00ffff
-                `;
-                glitchCount++;
-                if (glitchCount > 10) {
-                    clearInterval(glitchInterval);
-                    title.style.textShadow = '0 0 10px rgba(255, 0, 128, 0.5)';
-                }
-            }, 50);
         });
     </script>
 </body>
