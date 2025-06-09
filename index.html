@@ -3,44 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SENIOR'S | Command Center</title>
-    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-    <link rel="shortcut icon" href="https://i.ibb.co/ZRNX3SXn/Screenshot-2024-04-01-19-44-50-711-edit-com-google-android-youtube.jpg" type="image/jpeg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>/pages - File Sharing Server</title>
     <style>
-        :root {
-            /* SpyMC Theme Colors */
-            --bg-primary: #0a0a12;
-            --bg-secondary: #12121d;
-            --bg-tertiary: #1a1a2a;
-            --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.8);
-            --accent-primary: #00f0ff;
-            --accent-secondary: #0066ff;
-            --accent-tertiary: #ff00aa;
-            --success: #00ffaa;
-            --warning: #ffaa00;
-            --danger: #ff0066;
-            
-            /* Glass effect */
-            --glass-bg: rgba(30, 30, 50, 0.4);
-            --glass-border: rgba(0, 240, 255, 0.1);
-            --glass-highlight: rgba(0, 240, 255, 0.05);
-            
-            /* Shadows */
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
-            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
-            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
-            --glow-primary: 0 0 20px rgba(0, 240, 255, 0.5);
-            
-            /* Transitions */
-            --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-medium: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -48,511 +12,252 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
+            font-family: 'Courier New', 'Monaco', monospace;
+            background: #0a0a0a;
+            color: #00ff00;
             min-height: 100vh;
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(0, 240, 255, 0.05) 0%, transparent 25%),
-                radial-gradient(circle at 80% 70%, rgba(255, 0, 170, 0.05) 0%, transparent 25%);
-            background-size: cover;
-            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             line-height: 1.6;
         }
 
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 40px;
-        }
-
-        /* Header */
-        .header {
+            max-width: 800px;
+            padding: 2rem;
             text-align: center;
-            margin-bottom: 40px;
         }
 
-        .logo {
-            height: 100px;
-            margin: 0 auto 20px;
-            display: block;
-            filter: drop-shadow(0 0 15px var(--accent-primary));
-            transition: var(--transition-medium);
+        .terminal-window {
+            background: #000;
+            border: 2px solid #00ff00;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
         }
 
-        .logo:hover {
-            transform: scale(1.05);
-            filter: drop-shadow(0 0 25px var(--accent-primary));
+        .terminal-header {
+            background: #1a1a1a;
+            margin: -1rem -1rem 1rem -1rem;
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid #00ff00;
+            text-align: left;
+            font-size: 0.9rem;
+            color: #888;
         }
 
-        h1, h2, h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+        .ascii-art {
+            font-size: 0.7rem;
+            color: #00ff00;
+            margin: 2rem 0;
+            white-space: pre;
+            text-align: center;
         }
 
         h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            letter-spacing: 1px;
+            color: #ff0080;
+            font-size: 2rem;
+            margin: 1rem 0;
+            text-shadow: 0 0 10px rgba(255, 0, 128, 0.5);
         }
 
-        .subtitle {
-            color: var(--text-secondary);
+        .description {
             font-size: 1.1rem;
-            max-width: 700px;
-            margin: 0 auto;
+            margin: 1.5rem 0;
+            color: #00ff00;
         }
 
-        /* Navigation */
-        .nav {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 40px;
+        .main-site {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            padding: 1rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+            font-size: 1.2rem;
         }
 
-        .nav-link {
-            padding: 12px 24px;
-            border-radius: 8px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            color: var(--text-primary);
+        .main-site::before {
+            content: '> ';
+            color: #ff0080;
+        }
+
+        .main-site a {
+            color: #00ffff;
             text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition-fast);
+            transition: all 0.3s ease;
+        }
+
+        .main-site a:hover {
+            color: #ff0080;
+            text-shadow: 0 0 5px rgba(255, 0, 128, 0.7);
+        }
+
+        .status {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #0d1117;
+            border-left: 4px solid #00ff00;
+            text-align: left;
+        }
+
+        .status-line {
             display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .nav-link:hover {
-            background: var(--glass-highlight);
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .nav-link i {
-            color: var(--accent-primary);
-        }
-
-        /* Content Cards */
-        .content-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 20px;
-        }
-
-        .content-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 25px;
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--shadow-md);
-            transition: var(--transition-medium);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .content-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            opacity: 0;
-            transition: var(--transition-medium);
-            z-index: -1;
-        }
-
-        .content-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg), var(--glow-primary);
-        }
-
-        .content-card:hover::before {
-            opacity: 0.1;
-        }
-
-        .card-title {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .card-title i {
-            color: var(--accent-primary);
-            font-size: 1.3rem;
-        }
-
-        .card-description {
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-        }
-
-        .card-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--accent-primary);
-            text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition-fast);
-        }
-
-        .card-link:hover {
-            color: var(--accent-secondary);
-        }
-
-        /* Social Links */
-        .social-links {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 40px;
-        }
-
-        .social-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 24px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 8px;
-            color: var(--text-primary);
-            text-decoration: none;
-            transition: var(--transition-fast);
-            border: 1px solid var(--glass-border);
-        }
-
-        .social-link:hover {
-            background: var(--glass-highlight);
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .social-link i {
-            color: var(--accent-primary);
-        }
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            margin-top: 60px;
-            color: var(--text-secondary);
+            justify-content: space-between;
+            margin: 0.5rem 0;
             font-size: 0.9rem;
         }
 
-        .footer a {
-            color: var(--accent-primary);
-            text-decoration: none;
+        .status-ok {
+            color: #00ff00;
         }
 
-        /* Particles */
-        .particles {
+        .blinking {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Matrix background effect */
+        .matrix {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            pointer-events: none;
             z-index: -1;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(0, 240, 255, 0.5);
-            animation: float linear infinite;
-            pointer-events: none;
-            filter: blur(1px);
-        }
-
-        .particle:nth-child(3n) {
-            background: rgba(255, 0, 170, 0.5);
-        }
-
-        .particle:nth-child(5n) {
-            background: rgba(0, 102, 255, 0.5);
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-1200px) translateX(200px) rotate(360deg); opacity: 0; }
+            opacity: 0.05;
         }
 
         /* Responsive */
-        @media (max-width: 768px) {
+        @media (max-width: 600px) {
             .container {
-                padding: 30px 15px;
-                gap: 30px;
-            }
-            
-            .logo {
-                height: 80px;
+                padding: 1rem;
             }
             
             h1 {
-                font-size: 2rem;
+                font-size: 1.5rem;
             }
             
-            .content-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .nav-link {
-                padding: 10px 20px;
-                font-size: 0.9rem;
+            .ascii-art {
+                font-size: 0.5rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Particles background -->
-    <div class="particles" id="particles"></div>
-    
+    <canvas class="matrix" id="matrix"></canvas>
+
     <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <img src="https://i.ibb.co/1JwvSRQM/minecraft-title.png" alt="SpyMC" class="logo">
-            <h1>SENIOR'S COMMAND CENTER</h1>
-            <p class="subtitle">Strategic hub for digital operations and community management</p>
-        </header>
-        
-        <!-- Navigation -->
-        <nav class="nav">
-            <a href="https://spymc.xyz" class="nav-link" target="_blank">
-                <i class="fas fa-server"></i>
-                <span>SpyMC Network</span>
-            </a>
-            <a href="https://discord.spymc.xyz" class="nav-link" target="_blank">
-                <i class="fab fa-discord"></i>
-                <span>Community Discord</span>
-            </a>
-            <a href="https://youtube.com/@yoursenioryt" class="nav-link" target="_blank">
-                <i class="fab fa-youtube"></i>
-                <span>YouTube Channel</span>
-            </a>
-            <a href="https://instagram.com/yoursenioryt" class="nav-link" target="_blank">
-                <i class="fab fa-instagram"></i>
-                <span>Instagram</span>
-            </a>
-            <a href="https://twitter.com/yoursenioryt" class="nav-link" target="_blank">
-                <i class="fab fa-twitter"></i>
-                <span>Twitter</span>
-            </a>
-        </nav>
-        
-        <!-- Content Grid -->
-        <div class="content-grid">
-            <!-- SpyMC Card -->
-            <div class="content-card">
-                <h3 class="card-title">
-                    <i class="fas fa-server"></i>
-                    SpyMC Network
-                </h3>
-                <p class="card-description">
-                    Premium Minecraft network featuring unique gameplay modes, custom plugins, and a thriving community. Join 130+ daily players in our digital universe.
-                </p>
-                <a href="https://spymc.xyz" class="card-link" target="_blank">
-                    <span>Visit Server</span>
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
+        <div class="terminal-window">
+            <div class="terminal-header">root@server:/pages$ cat info.txt</div>
             
-            <!-- Discord Card -->
-            <div class="content-card">
-                <h3 class="card-title">
-                    <i class="fab fa-discord"></i>
-                    Community Hub
-                </h3>
-                <p class="card-description">
-                    Join our 5000+ member Discord community for announcements, support, and exclusive events. The central hub for all SpyMC operations.
-                </p>
-                <a href="https://discord.spymc.xyz" class="card-link" target="_blank">
-                    <span>Join Discord</span>
-                    <i class="fas fa-arrow-right"></i>
-                </a>
+            <div class="ascii-art">
+╔══════════════════════════════════════════════════════════════╗
+║  ███████╗██╗██╗     ███████╗    ███████╗██╗  ██╗ █████╗ ██████╗ ███████╗  ║
+║  ██╔════╝██║██║     ██╔════╝    ██╔════╝██║  ██║██╔══██╗██╔══██╗██╔════╝  ║
+║  █████╗  ██║██║     █████╗      ███████╗███████║███████║██████╔╝█████╗    ║
+║  ██╔══╝  ██║██║     ██╔══╝      ╚════██║██╔══██║██╔══██║██╔══██╗██╔══╝    ║
+║  ██║     ██║███████╗███████╗    ███████║██║  ██║██║  ██║██║  ██║███████╗  ║
+║  ╚═╝     ╚═╝╚══════╝╚══════╝    ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝  ║
+╚══════════════════════════════════════════════════════════════╝
             </div>
+
+            <h1>/pages</h1>
             
-            <!-- YouTube Card -->
-            <div class="content-card">
-                <h3 class="card-title">
-                    <i class="fab fa-youtube"></i>
-                    Content Archive
-                </h3>
-                <p class="card-description">
-                    Tutorials, server showcases, and gameplay highlights. Subscribe for weekly Minecraft content and behind-the-scenes development.
-                </p>
-                <a href="https://youtube.com/@yoursenioryt" class="card-link" target="_blank">
-                    <span>View Channel</span>
-                    <i class="fas fa-arrow-right"></i>
-                </a>
+            <div class="description">
+                File & Media Sharing Server
             </div>
-            
-            <!-- Projects Card -->
-            <div class="content-card">
-                <h3 class="card-title">
-                    <i class="fas fa-code-branch"></i>
-                    Current Projects
-                </h3>
-                <p class="card-description">
-                    Explore my active development projects including game concepts, server infrastructure, and community initiatives.
-                </p>
-                <a href="https://github.com/yoursenior" class="card-link" target="_blank">
-                    <span>View Projects</span>
-                    <i class="fas fa-arrow-right"></i>
-                </a>
+
+            <div class="main-site">
+                Main Website: <a href="https://senior.spymc.xyz">senior.spymc.xyz</a>
             </div>
-            
-            <!-- Support Card -->
-            <div class="content-card">
-                <h3 class="card-title">
-                    <i class="fas fa-headset"></i>
-                    Support Center
-                </h3>
-                <p class="card-description">
-                    Need help? Access our ticket system for technical support, server issues, or partnership inquiries.
-                </p>
-                <a href="https://discord.spymc.xyz" class="card-link" target="_blank">
-                    <span>Get Support</span>
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-            
-            <!-- Contact Card -->
-            <div class="content-card">
-                <h3 class="card-title">
-                    <i class="fas fa-envelope"></i>
-                    Direct Contact
-                </h3>
-                <p class="card-description">
-                    For business inquiries, sponsorship opportunities, or press contacts. Response within 24-48 hours.
-                </p>
-                <a href="mailto:gamerzofficail6@gmail.com" class="card-link">
-                    <span>Email Us</span>
-                    <i class="fas fa-arrow-right"></i>
-                </a>
+
+            <div class="status">
+                <div class="status-line">
+                    <span>Server Status:</span>
+                    <span class="status-ok">ONLINE <span class="blinking">●</span></span>
+                </div>
+                <div class="status-line">
+                    <span>Uptime:</span>
+                    <span class="status-ok">99.9%</span>
+                </div>
+                <div class="status-line">
+                    <span>Storage:</span>
+                    <span class="status-ok">Available</span>
+                </div>
+                <div class="status-line">
+                    <span>Access:</span>
+                    <span class="status-ok">Secure</span>
+                </div>
             </div>
         </div>
-        
-        <!-- Social Links -->
-        <div class="social-links">
-            <a href="https://youtube.com/@yoursenioryt" class="social-link" target="_blank">
-                <i class="fab fa-youtube"></i>
-                <span>YouTube</span>
-            </a>
-            <a href="https://instagram.com/yoursenioryt" class="social-link" target="_blank">
-                <i class="fab fa-instagram"></i>
-                <span>Instagram</span>
-            </a>
-            <a href="https://twitter.com/yoursenioryt" class="social-link" target="_blank">
-                <i class="fab fa-twitter"></i>
-                <span>Twitter</span>
-            </a>
-            <a href="https://www.spymc.xyz/status" class="social-link" target="_blank">
-                <i class="fas fa-globe"></i>
-                <span>Website</span>
-            </a>
-            <a href="https://discord.spymc.xyz" class="social-link" target="_blank">
-                <i class="fab fa-discord"></i>
-                <span>Discord</span>
-            </a>
-        </div>
-        
-        <!-- Footer -->
-        <footer class="footer">
-            <p>© 2025 SENIOR'S DIGITAL EMPIRE. All rights reserved. | Designed with <span style="color: var(--accent-tertiary);">♥</span> by <a href="https://twitter.com/yoursenioryt" target="_blank">yoursenior</a></p>
-        </footer>
     </div>
 
     <script>
-        // Initialize particles
-        function initParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = window.innerWidth < 768 ? 30 : 50;
-            
-            particlesContainer.innerHTML = '';
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                
-                const size = Math.random() * 6 + 2;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                
-                const left = Math.min(90, Math.random() * 100);
-                const top = Math.min(90, Math.random() * 100);
-                particle.style.left = `${left}%`;
-                particle.style.top = `${top}%`;
-                
-                const duration = Math.random() * 20 + 10;
-                particle.style.animationDuration = `${duration}s`;
-                particle.style.animationDelay = `${Math.random() * 5}s`;
-                
-                particlesContainer.appendChild(particle);
+        // Matrix background effect
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const matrix = "01";
+        const matrixArray = matrix.split("");
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+
+        const drops = [];
+        for (let x = 0; x < columns; x++) {
+            drops[x] = 1;
+        }
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#00ff00';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = matrixArray[Math.floor(Math.random() * matrixArray.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
             }
         }
 
-        // Animate elements on load
-        function animateElements() {
-            anime({
-                targets: '.header',
-                translateY: [-20, 0],
-                opacity: [0, 1],
-                duration: 800,
-                easing: 'easeOutExpo'
-            });
-            
-            anime({
-                targets: '.nav-link',
-                translateY: [20, 0],
-                opacity: [0, 1],
-                delay: anime.stagger(100),
-                duration: 800,
-                easing: 'easeOutExpo'
-            });
-            
-            anime({
-                targets: '.content-card',
-                translateY: [30, 0],
-                opacity: [0, 1],
-                delay: anime.stagger(100),
-                duration: 800,
-                easing: 'easeOutExpo'
-            });
-        }
+        setInterval(drawMatrix, 35);
 
-        // Initialize everything
-        function init() {
-            initParticles();
-            animateElements();
-            
-            // Add resize event listener
-            window.addEventListener('resize', initParticles);
-        }
+        // Resize canvas on window resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
 
-        // Start the application
-        document.addEventListener('DOMContentLoaded', init);
+        // Glitch effect on hover
+        const title = document.querySelector('h1');
+        title.addEventListener('mouseenter', () => {
+            let glitchCount = 0;
+            const glitchInterval = setInterval(() => {
+                title.style.textShadow = `
+                    ${Math.random() * 10 - 5}px ${Math.random() * 10 - 5}px 0 #ff0080,
+                    ${Math.random() * 10 - 5}px ${Math.random() * 10 - 5}px 0 #00ffff
+                `;
+                glitchCount++;
+                if (glitchCount > 10) {
+                    clearInterval(glitchInterval);
+                    title.style.textShadow = '0 0 10px rgba(255, 0, 128, 0.5)';
+                }
+            }, 50);
+        });
     </script>
 </body>
 </html>
