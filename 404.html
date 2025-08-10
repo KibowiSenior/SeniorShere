@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - File Not Found</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0a0a;
+            color: #00ff00;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 600px;
+            padding: 2rem;
+        }
+
+        .terminal-window {
+            background: #000;
+            border: 2px solid #ff5555;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 0 20px rgba(255, 85, 85, 0.3);
+            position: relative;
+        }
+
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .dots {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot.red { background: #ff5555; }
+        .dot.yellow { background: #ffff55; }
+        .dot.green { background: #55ff55; }
+
+        .terminal-title {
+            flex: 1;
+            text-align: center;
+            color: #ff5555;
+            font-size: 0.9rem;
+        }
+
+        .ascii-art {
+            font-size: 0.8rem;
+            line-height: 1;
+            color: #ff5555;
+            margin-bottom: 2rem;
+            white-space: pre;
+        }
+
+        .error-code {
+            font-size: 4rem;
+            color: #ff5555;
+            margin: 1rem 0;
+            text-shadow: 0 0 10px rgba(255, 85, 85, 0.5);
+        }
+
+        .error-message {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: #00ff00;
+        }
+
+        .error-description {
+            font-size: 1rem;
+            color: #888;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .link {
+            color: #00ffff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            border: 1px solid #00ffff;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .link:hover {
+            background: #00ffff;
+            color: #000;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        .cursor {
+            display: inline-block;
+            background: #00ff00;
+            width: 2px;
+            height: 1.2em;
+            animation: blink 1s infinite;
+            margin-left: 0.2rem;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Matrix background */
+        .matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.05;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .terminal-window {
+                padding: 1.5rem;
+            }
+            
+            .ascii-art {
+                font-size: 0.6rem;
+            }
+            
+            .error-message {
+                font-size: 1rem;
+            }
+            
+            .error-code {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas class="matrix" id="matrix"></canvas>
+    
+    <div class="container">
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <div class="dots">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                </div>
+                <div class="terminal-title"> ~/error/404$</div>
+            </div>
+            
+            <div class="ascii-art">
+   _____ _                  
+  / ____| |                 
+ | (___ | |__   __ _ _ __ ___ 
+  \___ \| '_ \ / _` | '__/ _ \
+  ____) | | | | (_| | | |  __/
+ |_____/|_| |_|\__,_|_|  \___|
+            </div>
+            
+            <div class="error-code">404</div>
+            <div class="error-message">FILE NOT FOUND<span class="cursor"></span></div>
+            <div class="error-description">
+                The requested resource could not be found.<br>
+                The file may have been moved, deleted, or never existed.
+            </div>
+            
+            <a href="/" class="link">RETURN TO HOME</a>
+        </div>
+    </div>
+
+    <script>
+        // Matrix background effect
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const matrix = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*(){}[]|\\:;\"'<>,.?/~`";
+        const matrixArray = matrix.split("");
+
+        const fontSize = 17;
+        const columns = canvas.width / fontSize;
+
+        const drops = [];
+        for (let x = 0; x < columns; x++) {
+            drops[x] = 1;
+        }
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#00ff00';
+            ctx.font = fontSize + 'px Courier New';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = matrixArray[Math.floor(Math.random() * matrixArray.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 40);
+
+        // Resize canvas on window resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
