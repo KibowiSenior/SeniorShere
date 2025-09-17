@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Image + Text Preview</title>
+  <style>
+    :root{--gap:24px;--bg:#0b0b0b}
+    html,body{height:100%;margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
+    .stack{display:grid;grid-auto-rows:100vh;gap:var(--gap);padding:var(--gap);box-sizing:border-box}
+
+    .card{
+      position:relative;overflow:hidden;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.6);height:calc(100vh - var(--gap));
+      display:flex;align-items:center;justify-content:center;background:#111
+    }
+
+    /* background image covers and is centered & cropped */
+    .card::before{
+      content:"";position:absolute;inset:0;background-position:center;background-size:cover;background-repeat:no-repeat;transform:scale(1.03);
+      filter:contrast(1) saturate(1) brightness(.95);
+    }
+
+    /* subtle gradient to make text readable */
+    .card::after{
+      content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.35) 30%, rgba(0,0,0,0.55) 100%);
+    }
+
+    .label{
+      position:relative;z-index:3;max-width:90%;text-align:center;padding:24px;border-radius:8px;backdrop-filter:blur(2px);
+    }
+
+    .title{font-size:clamp(20px,4vw,44px);line-height:1.05;margin:0;color:#fff;text-shadow:0 6px 20px rgba(0,0,0,.6);font-weight:700}
+    .subtitle{margin-top:8px;color:rgba(255,255,255,0.9);opacity:.95;font-size:clamp(12px,1.6vw,16px)}
+
+    /* small footer note with the source url if needed */
+    .source{position:absolute;right:14px;bottom:10px;z-index:4;font-size:12px;color:rgba(255,255,255,0.7)}
+
+    /* accessibility: keyboard focus to jump between sections */
+    .card:focus{outline:3px solid rgba(255,255,255,0.08);}
+
+    @media(min-width:900px){
+      .stack{padding:40px}
+    }
+  </style>
+</head>
+<body>
+  <main class="stack" id="stack">
+    <section class="card" id="explorer" tabindex="0" style="--img:url('https://i.ibb.co/5gnj2zDJ/Screenshot-2025-09-17-202804.png')">
+      <div class="label">
+        <h1 class="title">Explorer world — by user</h1>
+        <div class="subtitle">An image-only preview with centered caption</div>
+      </div>
+      <div class="source">https://i.ibb.co/5gnj2zDJ/Screenshot-2025-09-17-202804.png</div>
+    </section>
+
+    <section class="card" id="griefed" tabindex="0" style="--img:url('https://i.ibb.co/hxYTSjZ7/Screenshot-2025-09-17-202830.png')">
+      <div class="label">
+        <h1 class="title">Griefed & cropped chunks</h1>
+        <div class="subtitle">Cropped detail view — only text over the image</div>
+      </div>
+      <div class="source">https://i.ibb.co/hxYTSjZ7/Screenshot-2025-09-17-202830.png</div>
+    </section>
+
+    <section class="card" id="builds" tabindex="0" style="--img:url('https://i.ibb.co/7dK5q1h5/Screenshot-2025-09-17-202852.png')">
+      <div class="label">
+        <h1 class="title">Builds</h1>
+        <div class="subtitle">Showcasing builds — image with minimal text</div>
+      </div>
+      <div class="source">https://i.ibb.co/7dK5q1h5/Screenshot-2025-09-17-202852.png</div>
+    </section>
+  </main>
+
+  <script>
+    // Apply the background images from inline CSS variable so ::before can read them
+    document.querySelectorAll('.card').forEach(card => {
+      const img = getComputedStyle(card).getPropertyValue('--img');
+      if(img) card.style.setProperty('--bg-img', img);
+      // move the URL into the ::before via a real style
+      card.style.setProperty('--bs','');
+      card.style.setProperty('background-image','none');
+      card.style.setProperty('--imgValue', img);
+      // set ::before background-image by injecting a small style element per card
+      const rule = `${card.id}::before{background-image:${img}}`;
+      const s = document.createElement('style'); s.innerText = rule; document.head.appendChild(s);
+    });
+
+    // Allow keyboard navigation with up/down
+    window.addEventListener('keydown', e => {
+      if(e.key === 'ArrowDown' || e.key === 'ArrowUp'){
+        const sections = Array.from(document.querySelectorAll('.card'));
+        const idx = sections.findIndex(s => s === document.activeElement);
+        let next = 0;
+        if(idx === -1) next = e.key === 'ArrowDown' ? 0 : sections.length -1;
+        else next = e.key === 'ArrowDown' ? Math.min(sections.length-1, idx+1) : Math.max(0, idx-1);
+        sections[next].focus();
+        sections[next].scrollIntoView({behavior:'smooth',block:'center'});
+      }
+    });
+  </script>
+</body>
+</html>
